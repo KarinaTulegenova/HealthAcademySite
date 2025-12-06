@@ -1,0 +1,369 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Академия Здоровья</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+
+	<style>
+		/* Custom Navbar Styles */
+		.navbar {
+			padding: 1rem 0;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		.navbar-brand {
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: #fff !important;
+		}
+
+		.navbar-nav .nav-link {
+			color: rgba(255, 255, 255, 0.85) !important;
+			padding: 0.6rem 1rem;
+			transition: all 0.3s ease;
+			font-weight: 500;
+		}
+
+		.navbar-nav .nav-link:hover,
+		.navbar-nav .nav-link:focus {
+			color: #fff !important;
+			background: rgba(255, 255, 255, 0.1);
+			border-radius: 0.375rem;
+		}
+
+		.navbar-nav .nav-link.active {
+			color: #fff !important;
+			background: rgba(255, 255, 255, 0.15);
+			border-radius: 0.375rem;
+		}
+
+		.dropdown-menu {
+			background: #212529;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			border-radius: 0.5rem;
+			padding: 0.5rem;
+			margin-top: 0.5rem;
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+		}
+
+		.dropdown-item {
+			color: rgba(255, 255, 255, 0.85) !important;
+			padding: 0.6rem 1rem;
+			border-radius: 0.375rem;
+			transition: all 0.3s ease;
+		}
+
+		.dropdown-item:hover,
+		.dropdown-item:focus {
+			background: rgba(255, 255, 255, 0.1) !important;
+			color: #fff !important;
+		}
+
+		.btn-outline-light:hover {
+			background: #fff;
+			color: #212529;
+		}
+
+		.navbar-text {
+			font-weight: 500;
+		}
+
+		/* Mobile Styles */
+		@media (max-width: 991px) {
+			.navbar-collapse {
+				background: #1a1d20;
+				margin-top: 1rem;
+				padding: 1rem;
+				border-radius: 0.5rem;
+			}
+
+			.navbar-nav {
+				gap: 0.5rem;
+			}
+
+			.d-flex.ms-auto {
+				margin-top: 1rem;
+				flex-direction: column;
+				gap: 0.5rem;
+			}
+
+			.d-flex.ms-auto .btn {
+				width: 100%;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="{% url 'base:index' %}">
+				<i class="fas fa-heartbeat me-2"></i>
+				Академия Здоровья
+			</a>
+
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+					<!-- Главная -->
+					<li class="nav-item">
+						<a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}"
+							href="{% url 'base:index' %}">
+							<i class="fas fa-home me-1"></i>
+							Главная
+						</a>
+					</li>
+
+					<!-- Услуги Dropdown -->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownServices" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="fas fa-stethoscope me-1"></i>
+							Услуги
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdownServices">
+							<li>
+								<a class="dropdown-item" href="#">
+									<i class="fas fa-brain me-2"></i>
+									Неврология
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">
+									<i class="fas fa-allergies me-2"></i>
+									Дерматология
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">
+									<i class="fas fa-ribbon me-2"></i>
+									Онкология
+								</a>
+							</li>
+							<li>
+								<hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);">
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">
+									<i class="fas fa-list me-2"></i>
+									Все услуги
+								</a>
+							</li>
+						</ul>
+					</li>
+
+					<!-- Аккаунт Врача (только для врачей) -->
+					{% if request.user.is_authenticated and request.user.user_type == 'Doctor' %}
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDoctor" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="fas fa-user-md me-1"></i>
+							Аккаунт Врача
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdownDoctor">
+							<li>
+								<a class="dropdown-item" href="{% url 'physician:dashboard' %}">
+									<i class="fas fa-tachometer-alt me-2"></i>
+									Консоль
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{% url 'physician:appointments' %}">
+									<i class="fas fa-calendar-check me-2"></i>
+									Прием
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{% url 'physician:payments' %}">
+									<i class="fas fa-dollar-sign me-2"></i>
+									Платежи
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{% url 'physician:notifications' %}">
+									<i class="fas fa-bell me-2"></i>
+									Уведомления
+								</a>
+							</li>
+							<li>
+								<hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);">
+							</li>
+							<li>
+								<a class="dropdown-item" href="{% url 'physician:profile' %}">
+									<i class="fas fa-user-circle me-2"></i>
+									Профиль
+								</a>
+							</li>
+						</ul>
+					</li>
+					{% endif %}
+
+					<!-- Аккаунт Пациента (только для пациентов) -->
+					{% if request.user.is_authenticated and request.user.user_type == 'Patient' %}
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPatient" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="fas fa-user me-1"></i>
+							Аккаунт Пациента
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdownPatient">
+							<li>
+								<a class="dropdown-item" href="{% url 'patient:dashboard' %}">
+									<i class="fas fa-tachometer-alt me-2"></i>
+									Консоль
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{% url 'patient:appointments' %}">
+									<i class="fas fa-calendar-check me-2"></i>
+									Прием
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{% url 'patient:payments' %}">
+									<i class="fas fa-dollar-sign me-2"></i>
+									Платежи
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{% url 'patient:notifications' %}">
+									<i class="fas fa-bell me-2"></i>
+									Уведомления
+								</a>
+							</li>
+							<li>
+								<hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);">
+							</li>
+							<li>
+								<a class="dropdown-item" href="{% url 'patient:profile' %}">
+									<i class="fas fa-user-circle me-2"></i>
+									Профиль
+								</a>
+							</li>
+						</ul>
+					</li>
+					{% endif %}
+
+					<!-- Прочее Dropdown -->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownOther" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="fas fa-ellipsis-h me-1"></i>
+							Прочее
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdownOther">
+							<li>
+								<a class="dropdown-item" href="#">
+									<i class="fas fa-info-circle me-2"></i>
+									О нас
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">
+									<i class="fas fa-envelope me-2"></i>
+									Связаться с нами
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">
+									<i class="fas fa-question-circle me-2"></i>
+									FAQ
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+				<!-- Auth Buttons -->
+				<div class="d-flex ms-auto align-items-center">
+					{% if request.user.is_authenticated %}
+					<span class="navbar-text text-white me-3">
+						<i class="fas fa-user-circle me-1"></i>
+						Привет, <strong>{{ request.user.full_name|default:request.user.email }}</strong>!
+					</span>
+					<a href="{% url 'userauths:logout' %}" class="btn btn-danger">
+						<i class="fas fa-sign-out-alt me-1"></i>
+						Выйти
+					</a>
+					{% else %}
+					<a href="{% url 'userauths:login' %}" class="btn btn-outline-light me-2">
+						<i class="fas fa-sign-in-alt me-1"></i>
+						Войти
+					</a>
+					<a href="{% url 'userauths:register' %}" class="btn btn-primary">
+						<i class="fas fa-user-plus me-1"></i>
+						Регистрация
+					</a>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Messages -->
+	{% if messages %}
+	<div class="container mt-3">
+		{% for message in messages %}
+		<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+			<i
+				class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %} me-2"></i>
+			<strong>{{ message }}</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+
+	<!-- Main Content -->
+	<main>
+		{% block content %}{% endblock content %}
+	</main>
+
+	<!-- Footer (optional) -->
+	<footer class="bg-dark text-white mt-5 py-4">
+		<div class="container text-center">
+			<p class="mb-0">
+				&copy; 2024 Академия Здоровья. Все права защищены.
+			</p>
+		</div>
+	</footer>
+
+	<!-- JavaScript -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
+	<script src="{% static 'assets/js/function.js' %}"></script>
+
+	<script>
+		// Auto-close navbar on mobile after clicking a link
+		document.addEventListener('DOMContentLoaded', function () {
+			const navLinks = document.querySelectorAll('.navbar-nav .nav-link:not(.dropdown-toggle)');
+			const navbarCollapse = document.querySelector('.navbar-collapse');
+
+			navLinks.forEach(link => {
+				link.addEventListener('click', function () {
+					if (window.innerWidth < 992 && navbarCollapse.classList.contains('show')) {
+						const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+						bsCollapse.hide();
+					}
+				});
+			});
+		});
+	</script>
+</body>
+
+</html>
