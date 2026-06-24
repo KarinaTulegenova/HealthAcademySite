@@ -346,23 +346,6 @@ django_healthacademy/
 | GET | `/physician/notifications/` | Уведомления |
 | GET/POST | `/physician/profile/` | Профиль |
 
----
-
-## Источник
-https://www.youtube.com/watch?v=3aRyCwP6ibY&list=LL&index=2&t=141s
-### Главная страница
-![Home Page](screenshots/home.png)
-
-### Dashboard врача
-![Doctor Dashboard](screenshots/doctor-dashboard.png)
-
-### Dashboard пациента
-![Patient Dashboard](screenshots/patient-dashboard.png)
-
-### Страница оплаты
-![Payment Page](screenshots/payment.png)
-
-<div align="center">
 
 **Сделано с ❤️ для улучшения медицинского обслуживания**
 
